@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3 EN RAYA IOEL</title>
+  <style>
+    :root {
+      --primary: #616161;
+      --secondary: #424242;
+      --accent: #f44336;
+      --light: #F5F5F5;
+      --dark: #212121;
+      --gray: #9E9E9E;
+      --x-color: #f44336;
+      --o-color: #000000;
+      --bg-gradient: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: var(--bg-gradient);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .anime-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.03;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M30,10 Q50,5 70,10 T90,30 Q95,50 90,70 T70,90 Q50,95 30,90 T10,70 Q5,50 10,30 T30,10Z" fill="none" stroke="black" stroke-width="2"/></svg>');
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      border-bottom: 3px solid var(--secondary);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #ff6b6b, #ffa8a8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .auth-section, .game-section {
+      flex: 1;
+      min-width: 300px;
+      padding: 20px;
+    }
+    
+    .auth-section {
+      border-right: 1px solid #eee;
+    }
+    
+    h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      background: #FAFAFA;
+    }
+    
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #4d4d4d;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: var(--secondary);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #2c2c2c;
+      transform: translateY(-2px);
+    }
+    
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .btn-accent:hover {
+      background: #d32f2f;
+      transform: translateY(-2px);
+    }
+    
+    .btn-action {
+      background: var(--primary);
+      color: white;
+      margin-top: 10px;
+      width: 100%;
+    }
+    
+    .btn-action:hover {
+      background: #4d4d4d;
+      transform: translateY(-2px);
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .auth-buttons button {
+      flex: 1;
+    }
+    
+    .message {
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 6px;
+      text-align: center;
+    }
+    
+    .error {
+      background: #FFEBEE;
+      color: var(--accent);
+      border: 1px solid #FFCDD2;
+    }
+    
+    .success {
+      background: #E8F5E9;
+      color: #388E3C;
+      border: 1px solid #C8E6C9;
+    }
+    
+    .game-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .join-game {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .join-game input {
+      flex: 1;
+    }
+    
+    .game-info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #FAFAFA;
+      border-radius: 8px;
+      display: none;
+      border: 1px solid #EEE;
+    }
+    
+    .game-info h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    .game-info p {
+      margin-bottom: 10px;
+    }
+    
+    .players-list {
+      margin-top: 15px;
+    }
+    
+    .player {
+      padding: 8px 12px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .player-x {
+      border-left: 4px solid var(--x-color);
+    }
+    
+    .player-o {
+      border-left: 4px solid var(--o-color);
+    }
+    
+    .player-you::after {
+      content: " (Tú)";
+      color: var(--gray);
+      font-style: italic;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .status-waiting {
+      background: #FFF8E1;
+      color: #FFA000;
+    }
+    
+    .status-playing {
+      background: #E8F5E9;
+      color: #388E3C;
+    }
+    
+    .status-finished {
+      background: #FBE9E7;
+      color: var(--accent);
+    }
+    
+    /* Tablero de juego */
+    .game-board {
+      margin-top: 30px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      background-color: var(--dark);
+      border-radius: 5px;
+      padding: 5px;
+      margin: 15px 0;
+    }
+    
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cell:hover {
+      background-color: #EEEEEE;
+    }
+    
+    .cell.x {
+      color: var(--x-color);
+    }
+    
+    .cell.o {
+      color: var(--o-color);
+    }
+    
+    .cell.x::before {
+      content: "🗡️";
+      font-size: 40px;
+    }
+    
+    .cell.o::before {
+      content: "🛡️";
+      font-size: 40px;
+    }
+    
+    .turn-indicator {
+      margin: 15px 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: #f5f5f5;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .turn-indicator.x {
+      color: var(--x-color);
+      background: #ffebee;
+    }
+    
+    .turn-indicator.o {
+      color: var(--o-color);
+      background: #f5f5f5;
+    }
+    
+    .anime-characters {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      width: 100%;
+    }
+    
+    .character {
+      text-align: center;
+      font-size: 3rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .character:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    .character:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+    
+    .character:nth-child(3) {
+      animation-delay: 1s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .user-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      background: #e3f2fd;
+      border-radius: 15px;
+      margin-left: 10px;
+      font-size: 0.8rem;
+      color: #1976d2;
+    }
+    
+    @media (max-width: 768px) {
+      .auth-section {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .content {
+        flex-direction: column;
+      }
+      
+      .board {
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(3, 80px);
+      }
+      
+      .cell {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .anime-characters {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="anime-bg"></div>
+    <header>
+      <h1>3 EN RAYA IOEL</h1>
+      <p class="subtitle">Juega con amigos en tiempo real - Estilo Japonés</p>
+    </header>
+    
+    <div class="content">
+      <!-- Sección de Autenticación -->
+      <section class="auth-section">
+        <h2>Autenticación</h2>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" placeholder="tu.correo@ejemplo.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="Tu contraseña" />
+        </div>
+        <div class="auth-buttons">
+          <button id="btnRegister" class="btn-primary">Registrar</button>
+          <button id="btnLogin" class="btn-secondary">Iniciar Sesión</button>
+          <button id="btnLogout" class="btn-accent">Cerrar Sesión</button>
+        </div>
+        <div id="authMessage" class="message"></div>
+        
+        <div id="userInfo" style="display: none;">
+          <h3>Información del Usuario</h3>
+          <p>Conectado como: <span id="userEmail"></span> <span class="user-badge">Conectado</span></p>
+        </div>
+      </section>
+      
+      <!-- Sección de Juego -->
+      <section class="game-section">
+        <h2>Gestión de Partidas</h2>
+        <p>Crea una nueva partida o únete a una existente usando un código.</p>
+        
+        <div class="game-actions">
+          <button id="btnCrearPartida" class="btn-action">➕ Crear partida (serás X)</button>
+          
+          <div class="join-game">
+            <input type="text" id="codigoPartida" placeholder="ID de partida para unirse" />
+            <button id="btnUnirsePartida" class="btn-secondary">🔗 Unirse como O</button>
+          </div>
+        </div>
+        
+        <div id="gameMessage" class="message"></div>
+        
+        <div id="infoPartida" class="game-info">
+          <h3>📌 Partida Actual</h3>
+          <p><b>ID:</b> <span id="pid"></span></p>
+          <p><b>Estado:</b> <span id="pestado" class="status-badge"></span></p>
+          <p><b>Turno:</b> <span id="pturno"></span></p>
+          
+          <div class="players-list">
+            <p><b>Jugadores:</b></p>
+            <div id="px" class="player player-x"></div>
+            <div id="po" class="player player-o"></div>
+          </div>
+          
+          <p><b>Ganador:</b> <span id="pganador"></span></p>
+        </div>
+        
+        <!-- Tablero de juego -->
+        <div id="gameBoard" class="game-board">
+          <div class="anime-characters">
+            <div class="character">👺</div>
+            <div class="character">🗡️</div>
+            <div class="character">🦊</div>
+          </div>
+          
+          <div id="turnIndicator" class="turn-indicator">Turno de: X</div>
+          <div class="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+          </div>
+          <button id="btnReiniciar" class="btn-accent">Reiniciar Partida</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script type="module">
+    // Importar Firebase con tu configuración
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      signOut,
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      addDoc, 
+      doc, 
+      getDoc, 
+      setDoc, 
+      updateDoc, 
+      onSnapshot,
+      serverTimestamp, 
+      runTransaction 
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // Tu configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAOp_ljtC94ZMbAIgQ2X2YvyDOmJ3GZwkE",
+      authDomain: "juego-mesa-cloud-ecc93.firebaseapp.com",
+      projectId: "juego-mesa-cloud-ecc93",
+      storageBucket: "juego-mesa-cloud-ecc93.firebasestorage.app",
+      messagingSenderId: "1004317687180",
+      appId: "1:1004317687180:web:926eb336f302e45712aaa9",
+      measurementId: "G-4JZZ6ZHXLG"
+    };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Referencias a elementos de la UI
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const btnRegister = document.getElementById("btnRegister");
+    const btnLogin = document.getElementById("btnLogin");
+    const btnLogout = document.getElementById("btnLogout");
+    const authMessage = document.getElementById("authMessage");
+    const userInfo = document.getElementById("userInfo");
+    const userEmailSpan = document.getElementById("userEmail");
+    
+    const btnCrearPartida = document.getElementById("btnCrearPartida");
+    const btnUnirsePartida = document.getElementById("btnUnirsePartida");
+    const codigoPartidaInput = document.getElementById("codigoPartida");
+    const gameMessage = document.getElementById("gameMessage");
+    const infoPartida = document.getElementById("infoPartida");
+    const pidSpan = document.getElementById("pid");
+    const pestadoSpan = document.getElementById("pestado");
+    const pturnoSpan = document.getElementById("pturno");
+    const pxSpan = document.getElementById("px");
+    const poSpan = document.getElementById("po");
+    const pganadorSpan = document.getElementById("pganador");
+    
+    const gameBoard = document.getElementById("gameBoard");
+    const turnIndicator = document.getElementById("turnIndicator");
+    const cells = document.querySelectorAll(".cell");
+    const btnReiniciar = document.getElementById("btnReiniciar");
+
+    // Estado local
+    let partidaRef = null;
+    let unsubPartida = null;
+    let miSimbolo = null;
+    let partidaId = null;
+
+    // Cargar datos de usuario guardados
+    function cargarUsuarioGuardado() {
+      const usuarioGuardado = localStorage.getItem('usuarioJuego');
+      if (usuarioGuardado) {
+        const usuario = JSON.parse(usuarioGuardado);
+        emailInput.value = usuario.email;
+        // No cargamos la contraseña por seguridad
+      }
+    }
+
+    // Guardar datos de usuario
+    function guardarUsuario(email) {
+      localStorage.setItem('usuarioJuego', JSON.stringify({email}));
+    }
+
+    // Eliminar datos de usuario
+    function eliminarUsuarioGuardado() {
+      localStorage.removeItem('usuarioJuego');
+    }
+
+    // Helper para mostrar mensajes
+    function showMessage(element, message, type = "") {
+      element.textContent = message;
+      element.className = `message ${type}`;
+      setTimeout(() => {
+        element.textContent = "";
+        element.className = "message";
+      }, 5000);
+    }
+
+    // Helper para verificar si hay un usuario autenticado
+    function requireUser() {
+      if (!auth.currentUser) {
+        showMessage(gameMessage, "⚠ Debes iniciar sesión para realizar esta acción.", "error");
+        return false;
+      }
+      return true;
+    }
+
+    // Autenticación - Registrar usuario
+    btnRegister.addEventListener("click", async () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      
+      if (!email || !password) {
+        showMessage(authMessage, "⚠ Por favor, completa todos los campos.", "error");
+        return;
+      }
+      
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // Guardar información adicional del usuario en Firestore
+        await setDoc(doc(db, "usuarios", userCredential.user.uid), {
+          email: userCredential.user.email,
+          fechaRegistro: serverTimestamp()
+        });
+        
+        // Guardar solo el email (no la contraseña por seguridad)
+        guardarUsuario(email);
+        
+        showMessage(authMessage, "✅ Usuario registrado con éxito.", "success");
+      } catch (error) {
+        showMessage(authMessage, `❌ Error: ${error.message}`, "error");
+      }
+    });
+
+    // Autenticación - Iniciar sesión
+    btnLogin.addEventListener("click", async () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      
+      if (!email || !password) {
+        showMessage(authMessage, "⚠ Por favor, completa todos los campos.", "error");
+        return;
+      }
+      
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        
+        // Guardar solo el email (no la contraseña por seguridad)
+        guardarUsuario(email);
+        
+        showMessage(authMessage, "✅ Sesión iniciada con éxito.", "success");
+      } catch (error) {
+        showMessage(authMessage, `❌ Error: ${error.message}`, "error");
+      }
+    });
+
+    // Autenticación - Cerrar sesión
+    btnLogout.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        eliminarUsuarioGuardado();
+        showMessage(authMessage, "👋 Sesión cerrada.", "success");
+      } catch (error) {
+        showMessage(authMessage, `❌ Error: ${error.message}`, "error");
+      }
+    });
+
+    // Crear una nueva partida
+    btnCrearPartida.addEventListener("click", async () => {
+      if (!requireUser()) return;
+      
+      try {
+        const user = auth.currentUser;
+        const docRef = await addDoc(collection(db, "partidas"), {
+          creadoEn: serverTimestamp(),
+          estado: "waiting",
+          turno: "X",
+          tablero: ["", "", "", "", "", "", "", "", ""],
+          jugadores: {
+            X: { uid: user.uid, email: user.email },
+            O: { uid: null, email: null }
+          },
+          ganador: null
+        });
+
+        showMessage(gameMessage, `🆕 Partida creada. ID: ${docRef.id} (compártelo para que otros se unan)`, "success");
+        activarPartida(docRef.id);
+        miSimbolo = "X";
+      } catch (error) {
+        showMessage(gameMessage, `❌ Error: ${error.message}`, "error");
+      }
+    });
+
+    // Unirse a una partida existente
+    btnUnirsePartida.addEventListener("click", async () => {
+      if (!requireUser()) return;
+      
+      const id = codigoPartidaInput.value.trim();
+      if (!id) {
+        showMessage(gameMessage, "⚠ Ingresa un ID de partida válido.", "error");
+        return;
+      }
+
+      try {
+        const partidaDoc = doc(db, "partidas", id);
+        
+        await runTransaction(db, async (transaction) => {
+          const partidaSnapshot = await transaction.get(partidaDoc);
+          
+          if (!partidaSnapshot.exists()) {
+            throw new Error("La partida no existe.");
+          }
+          
+          const partidaData = partidaSnapshot.data();
+          
+          if (partidaData.estado !== "waiting") {
+            throw new Error("La partida no está esperando jugadores.");
+          }
+          
+          if (partidaData.jugadores.O.uid) {
+            throw new Error("La partida ya tiene jugador O.");
+          }
+          
+          // Verificar que el usuario no sea el mismo que ya está en la partida
+          if (partidaData.jugadores.X.uid === auth.currentUser.uid) {
+            throw new Error("No puedes unirte a tu propia partida como jugador O.");
+          }
+          
+          // Actualizar la partida con el nuevo jugador
+          transaction.update(partidaDoc, {
+            "jugadores.O": { 
+              uid: auth.currentUser.uid, 
+              email: auth.currentUser.email 
+            },
+            estado: "playing"
+          });
+        });
+        
+        showMessage(gameMessage, "✅ Te has unido a la partida como O.", "success");
+        activarPartida(id);
+        miSimbolo = "O";
+      } catch (error) {
+        showMessage(gameMessage, `❌ Error: ${error.message}`, "error");
+      }
+    });
+
+    // Manejar clic en una celda del tablero
+    cells.forEach(cell => {
+      cell.addEventListener("click", async () => {
+        if (!partidaRef || !miSimbolo) return;
+        
+        const index = parseInt(cell.getAttribute("data-index"));
+        
+        try {
+          const partidaSnapshot = await getDoc(partidaRef);
+          if (!partidaSnapshot.exists()) return;
+          
+          const partida = partidaSnapshot.data();
+          
+          // Verificar si es el turno del jugador actual
+          if (partida.turno !== miSimbolo) {
+            showMessage(gameMessage, "⚠ No es tu turno.", "error");
+            return;
+          }
+          
+          // Verificar si la celda está vacía
+          if (partida.tablero[index] !== "") {
+            showMessage(gameMessage, "⚠ Esta celda ya está ocupada.", "error");
+            return;
+          }
+          
+          // Actualizar el tablero
+          const nuevoTablero = [...partida.tablero];
+          nuevoTablero[index] = miSimbolo;
+          
+          // Verificar si hay un ganador
+          const ganador = verificarGanador(nuevoTablero);
+          
+          // Actualizar la partida
+          await updateDoc(partidaRef, {
+            tablero: nuevoTablero,
+            turno: partida.turno === "X" ? "O" : "X",
+            estado: ganador ? "finished" : "playing",
+            ganador: ganador || null
+          });
+          
+        } catch (error) {
+          showMessage(gameMessage, `❌ Error: ${error.message}`, "error");
+        }
+      });
+    });
+
+    // Reiniciar partida
+    btnReiniciar.addEventListener("click", async () => {
+      if (!partidaRef) return;
+      
+      try {
+        await updateDoc(partidaRef, {
+          tablero: ["", "", "", "", "", "", "", "", ""],
+          turno: "X",
+          estado: "playing",
+          ganador: null
+        });
+        
+        showMessage(gameMessage, "🔄 Partida reiniciada", "success");
+      } catch (error) {
+        showMessage(gameMessage, `❌ Error: ${error.message}`, "error");
+      }
+    });
+
+    // Verificar si hay un ganador
+    function verificarGanador(tablero) {
+      const lineasGanadoras = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Filas
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columnas
+        [0, 4, 8], [2, 4, 6]             // Diagonales
+      ];
+      
+      for (const linea of lineasGanadoras) {
+        const [a, b, c] = linea;
+        if (tablero[a] && tablero[a] === tablero[b] && tablero[a] === tablero[c]) {
+          return tablero[a];
+        }
+      }
+      
+      return null;
+    }
+
+    // Activar la escucha de una partida
+    function activarPartida(id) {
+      // Dejar de escuchar la partida anterior si existe
+      if (unsubPartida) {
+        unsubPartida();
+      }
+      
+      partidaId = id;
+      partidaRef = doc(db, "partidas", id);
+      gameBoard.style.display = "flex";
+      
+      // Escuchar cambios en la partida en tiempo real
+      unsubPartida = onSnapshot(partidaRef, (snapshot) => {
+        if (!snapshot.exists()) {
+          infoPartida.style.display = "none";
+          gameBoard.style.display = "none";
+          showMessage(gameMessage, "⚠ La partida ha sido eliminada.", "error");
+          return;
+        }
+        
+        const partida = snapshot.data();
+        infoPartida.style.display = "block";
+        
+        // Actualizar la UI con la información de la partida
+        pidSpan.textContent = snapshot.id;
+        
+        // Estado de la partida
+        pestadoSpan.textContent = partida.estado;
+        pestadoSpan.className = `status-badge status-${partida.estado}`;
+        
+        // Turno actual
+        pturnoSpan.textContent = partida.turno;
+        turnIndicator.textContent = `Turno de: ${partida.turno}`;
+        turnIndicator.className = `turn-indicator ${partida.turno.toLowerCase()}`;
+        
+        // Jugadores
+        if (partida.jugadores.X.uid) {
+          const esTu = auth.currentUser && auth.currentUser.uid === partida.jugadores.X.uid;
+          pxSpan.textContent = `${partida.jugadores.X.email}${esTu ? " (Tú)" : ""}`;
+          pxSpan.className = esTu ? "player player-x player-you" : "player player-x";
+        }
+        
+        if (partida.jugadores.O && partida.jugadores.O.uid) {
+          const esTu = auth.currentUser && auth.currentUser.uid === partida.jugadores.O.uid;
+          poSpan.textContent = `${partida.jugadores.O.email}${esTu ? " (Tú)" : ""}`;
+          poSpan.className = esTu ? "player player-o player-you" : "player player-o";
+        }
+        
+        // Ganador
+        pganadorSpan.textContent = partida.ganador || "—";
+        
+        // Actualizar el tablero
+        partida.tablero.forEach((valor, index) => {
+          cells[index].textContent = "";
+          cells[index].className = `cell ${valor.toLowerCase()}`;
+        });
+        
+        // Mostrar mensaje si la partida ha terminado
+        if (partida.estado === "finished") {
+          if (partida.ganador) {
+            const esGanador = auth.currentUser && (
+              (partida.ganador === "X" && auth.currentUser.uid === partida.jugadores.X.uid) ||
+              (partida.ganador === "O" && auth.currentUser.uid === partida.jugadores.O.uid)
+            );
+            
+            if (esGanador) {
+              showMessage(gameMessage, "🎉 ¡Has ganado!", "success");
+            } else {
+              showMessage(gameMessage, "😞 Has perdido", "error");
+            }
+          } else {
+            showMessage(gameMessage, "🤝 Empate", "success");
+          }
+        }
+      }, (error) => {
+        showMessage(gameMessage, `❌ Error al escuchar la partida: ${error.message}`, "error");
+      });
+    }
+
+    // Observador de estado de autenticación
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userInfo.style.display = "block";
+        userEmailSpan.textContent = user.email;
+        // No restablecemos el campo de email para permitir múltiples usuarios
+        passwordInput.value = "";
+      } else {
+        userInfo.style.display = "none";
+        
+        // Dejar de escuchar la partida si el usuario cierra sesión
+        if (unsubPartida) {
+          unsubPartida();
+          unsubPartida = null;
+        }
+        infoPartida.style.display = "none";
+        gameBoard.style.display = "none";
+      }
+    });
+
+    // Cargar usuario al iniciar
+    window.addEventListener('load', () => {
+      cargarUsuarioGuardado();
+    });
+  </script>
+</body>
+</html>
